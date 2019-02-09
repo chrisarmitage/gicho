@@ -18,6 +18,10 @@ class RpcRouter implements Router
 
         preg_match_all("#/(?<controller>[\w\-]+)#", $url['path'], $matches);
 
+        if (count($matches['controller']) === 0) {
+            $matches['controller'][] = 'index';
+        }
+
         $controllerElements = array_map(
             function($url) {
                 return str_replace(
