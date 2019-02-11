@@ -6,7 +6,16 @@ use Framework\Router;
 
 class RpcRouter implements Router
 {
-    protected $controllerNamespace = 'Framework\\Controller\\';
+    protected $controllerNamespace;
+
+    /**
+     * @param string|null $controllerNamespace
+     */
+    public function __construct(?string $controllerNamespace)
+    {
+        $this->controllerNamespace = $controllerNamespace ?? 'Application\\Controller\\';
+    }
+
 
     /**
      * @param $url
