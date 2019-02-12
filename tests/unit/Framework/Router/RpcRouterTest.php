@@ -9,7 +9,7 @@ class RpcRouterTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->router = new \Framework\Router\RpcRouter();
+        $this->router = new \Framework\Router\RpcRouter('Framework\\Controller\\');
     }
 
     public function testParsesSingleDepthUrl()

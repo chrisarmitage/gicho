@@ -16,6 +16,7 @@ class PersonTest extends \PHPUnit\Framework\TestCase
         $container = new \Auryn\Injector();
 
         $container->share($container);
+        $container->share(new RestRouter('Framework\\Controller\\'));
         $container->alias(\Framework\Router::class, RestRouter::class);
 
         $this->app = $container->make(App::class);

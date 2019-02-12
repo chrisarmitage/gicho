@@ -9,7 +9,7 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->router = new \Framework\Router\RestRouter();
+        $this->router = new \Framework\Router\RestRouter('Framework\\Controller\\');
     }
 
     public function testParsesRootResourceUrl()
