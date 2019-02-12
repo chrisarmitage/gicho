@@ -16,7 +16,6 @@ class RpcRouter implements Router
         $this->controllerNamespace = $controllerNamespace ?? 'Application\\Controller\\';
     }
 
-
     /**
      * @param $url
      * @return RpcRoute
