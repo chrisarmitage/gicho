@@ -28,7 +28,7 @@ class RestRouter implements Router
      * @param string $method
      * @return RestRoute
      */
-    public function getRouteForUrl($url, $method = 'GET')
+    public function getRouteForUrl(string $url, string $method) : RestRoute
     {
         $url = parse_url($url);
 

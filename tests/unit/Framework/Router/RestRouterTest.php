@@ -14,7 +14,7 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testParsesUrlWithNoResource() : void
     {
-        $controllerName = $this->router->getRouteForUrl('/');
+        $controllerName = $this->router->getRouteForUrl('/', 'GET');
 
         self::assertEquals('Framework\\Controller\\Root\\Index', $controllerName->getControllerName());
         self::assertEquals(null, $controllerName->getResourceId());
@@ -22,7 +22,7 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testParsesRootResourceUrl()
     {
-        $controllerName = $this->router->getRouteForUrl('/resource');
+        $controllerName = $this->router->getRouteForUrl('/resource', 'GET');
 
         self::assertEquals('Framework\\Controller\\Resource\\Index', $controllerName->getControllerName());
         self::assertEquals(null, $controllerName->getResourceId());
@@ -30,7 +30,7 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testParsesResourceWithIdUrl()
     {
-        $controllerName = $this->router->getRouteForUrl('/resource/1');
+        $controllerName = $this->router->getRouteForUrl('/resource/1', 'GET');
 
         self::assertEquals('Framework\\Controller\\Resource\\Read', $controllerName->getControllerName());
         self::assertEquals('1', $controllerName->getResourceId());
@@ -38,7 +38,7 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testIgnoresCaseOnResource()
     {
-        $controllerName = $this->router->getRouteForUrl('/RESOURCE');
+        $controllerName = $this->router->getRouteForUrl('/RESOURCE', 'GET');
 
         self::assertEquals('Framework\\Controller\\Resource\\Index', $controllerName->getControllerName());
         self::assertEquals(null, $controllerName->getResourceId());
@@ -46,7 +46,7 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testPreservesCaseOnResourceId()
     {
-        $controllerName = $this->router->getRouteForUrl('/RESOURCE/ID');
+        $controllerName = $this->router->getRouteForUrl('/RESOURCE/ID', 'GET');
 
         self::assertEquals('Framework\\Controller\\Resource\\Read', $controllerName->getControllerName());
         self::assertEquals('ID', $controllerName->getResourceId());
@@ -54,14 +54,14 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testProcessesResourceDashes()
     {
-        $controllerName = $this->router->getRouteForUrl('/resource-name');
+        $controllerName = $this->router->getRouteForUrl('/resource-name', 'GET');
 
         self::assertEquals('Framework\\Controller\\ResourceName\\Index', $controllerName->getControllerName());
     }
 
     public function testPreservesResourceIdDashes()
     {
-        $controllerName = $this->router->getRouteForUrl('/resource-id/dash-id');
+        $controllerName = $this->router->getRouteForUrl('/resource-id/dash-id', 'GET');
 
         self::assertEquals('Framework\\Controller\\ResourceId\\Read', $controllerName->getControllerName());
         self::assertEquals('dash-id', $controllerName->getResourceId());
@@ -69,7 +69,7 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testParsesNestedRootResourceUrl()
     {
-        $controllerName = $this->router->getRouteForUrl('/resource/1/sub-resource');
+        $controllerName = $this->router->getRouteForUrl('/resource/1/sub-resource', 'GET');
 
         self::assertEquals('Framework\\Controller\\SubResource\\Index', $controllerName->getControllerName());
         self::assertEquals(null, $controllerName->getResourceId());
@@ -79,7 +79,7 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testParsesNestedResourceUrl()
     {
-        $controllerName = $this->router->getRouteForUrl('/resource/1/sub-resource/2');
+        $controllerName = $this->router->getRouteForUrl('/resource/1/sub-resource/2', 'GET');
 
         self::assertEquals('Framework\\Controller\\SubResource\\Read', $controllerName->getControllerName());
         self::assertEquals('2', $controllerName->getResourceId());
@@ -89,7 +89,7 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testParsesMultiNestedRootResourceUrl()
     {
-        $controllerName = $this->router->getRouteForUrl('/resource/1/sub-resource/2/sub-sub-resource');
+        $controllerName = $this->router->getRouteForUrl('/resource/1/sub-resource/2/sub-sub-resource', 'GET');
 
         self::assertEquals('Framework\\Controller\\SubSubResource\\Index', $controllerName->getControllerName());
         self::assertEquals(null, $controllerName->getResourceId());
@@ -100,7 +100,7 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testParsesMultiNestedResourceUrl()
     {
-        $controllerName = $this->router->getRouteForUrl('/resource/1/sub-resource/2/sub-sub-resource/3');
+        $controllerName = $this->router->getRouteForUrl('/resource/1/sub-resource/2/sub-sub-resource/3', 'GET');
 
         self::assertEquals('Framework\\Controller\\SubSubResource\\Read', $controllerName->getControllerName());
         self::assertEquals('3', $controllerName->getResourceId());

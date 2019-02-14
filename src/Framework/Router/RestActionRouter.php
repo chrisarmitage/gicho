@@ -28,7 +28,7 @@ class RestActionRouter implements Router
      * @param string $method
      * @return RestRoute
      */
-    public function getRouteForUrl($url, $method = 'GET') : RestRoute
+    public function getRouteForUrl(string $url, string $method) : RestRoute
     {
         $url = parse_url($url);
 
