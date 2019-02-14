@@ -57,6 +57,11 @@ class RestRouter implements Router
             ? array_pop($matches['id'])
             : null;
 
+        if ($resourceName === $this->controllerNamespace) {
+            $resourceName .= 'Root';
+            $resourceId = '';
+        }
+
         if ($controllerType === 'Index' && $resourceId !== '') {
             $controllerType = 'Read';
         }

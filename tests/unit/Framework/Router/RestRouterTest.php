@@ -12,6 +12,14 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
         $this->router = new \Framework\Router\RestRouter('Framework\\Controller\\');
     }
 
+    public function testParsesUrlWithNoResource() : void
+    {
+        $controllerName = $this->router->getRouteForUrl('/');
+
+        self::assertEquals('Framework\\Controller\\Root\\Index', $controllerName->getControllerName());
+        self::assertEquals(null, $controllerName->getResourceId());
+    }
+
     public function testParsesRootResourceUrl()
     {
         $controllerName = $this->router->getRouteForUrl('/resource');
