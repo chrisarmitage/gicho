@@ -9,7 +9,8 @@ interface Router
 {
     /**
      * @param string $url
+     * @param string $method
      * @return RpcRoute|RestRoute
      */
-    public function getRouteForUrl($url);
+    public function getRouteForUrl(string $url, string $method);
 }

@@ -28,7 +28,7 @@ class RestRouter implements Router
      * @param string $method
      * @return RestRoute
      */
-    public function getRouteForUrl($url, $method = 'GET')
+    public function getRouteForUrl(string $url, string $method) : RestRoute
     {
         $url = parse_url($url);
 
@@ -56,6 +56,11 @@ class RestRouter implements Router
         $resourceId = (count($matches['resource']) === count($matches['id']))
             ? array_pop($matches['id'])
             : null;
+
+        if ($resourceName === $this->controllerNamespace) {
+            $resourceName .= 'Root';
+            $resourceId = '';
+        }
 
         if ($controllerType === 'Index' && $resourceId !== '') {
             $controllerType = 'Read';

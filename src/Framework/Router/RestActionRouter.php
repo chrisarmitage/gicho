@@ -2,7 +2,9 @@
 
 namespace Framework\Router;
 
-class RestActionRouter
+use Framework\Router;
+
+class RestActionRouter implements Router
 {
     protected $controllerNamespace;
 
@@ -26,7 +28,7 @@ class RestActionRouter
      * @param string $method
      * @return RestRoute
      */
-    public function getRouteForUrl($url, $method = 'GET') : RestRoute
+    public function getRouteForUrl(string $url, string $method) : RestRoute
     {
         $url = parse_url($url);
 
@@ -54,6 +56,11 @@ class RestActionRouter
         $resourceId = (\count($matches['resource']) === \count($matches['id']))
             ? array_pop($matches['id'])
             : null;
+
+        if ($resourceName === $this->controllerNamespace) {
+            $resourceName .= 'Root';
+            $resourceId = '';
+        }
 
         if ($controllerType === 'Index' && $resourceId !== '') {
             $controllerType = 'Read';

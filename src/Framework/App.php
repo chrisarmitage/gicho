@@ -37,7 +37,7 @@ class App
 
     public function processRequest(Request $request)
     {
-        $route = $this->router->getRouteForUrl($request->getPathInfo());
+        $route = $this->router->getRouteForUrl($request->getPathInfo(), $request->getMethod());
 
         $this->container->share($route);
 
