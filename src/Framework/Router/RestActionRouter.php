@@ -2,7 +2,9 @@
 
 namespace Framework\Router;
 
-class RestActionRouter
+use Framework\Router;
+
+class RestActionRouter implements Router
 {
     protected $controllerNamespace;
 
