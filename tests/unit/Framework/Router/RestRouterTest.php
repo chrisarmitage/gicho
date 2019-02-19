@@ -108,4 +108,52 @@ class RestRouterTest extends \PHPUnit\Framework\TestCase
         self::assertEquals('1', $controllerName->getNestedResources()['Resource']);
         self::assertEquals('2', $controllerName->getNestedResources()['SubResource']);
     }
+
+    public function testParsesRootResourceUrlWithPost()
+    {
+        $controllerName = $this->router->getRouteForUrl('/resource', 'POST');
+
+        self::assertEquals('Framework\\Controller\\Resource\\Create', $controllerName->getControllerName());
+        self::assertEquals(null, $controllerName->getResourceId());
+    }
+
+    public function testParsesRootResourceUrlWithPut()
+    {
+        $controllerName = $this->router->getRouteForUrl('/resource', 'PUT');
+
+        self::assertEquals('Framework\\Controller\\Resource\\Update', $controllerName->getControllerName());
+        self::assertEquals(null, $controllerName->getResourceId());
+    }
+
+    public function testParsesRootResourceUrlWithDelete()
+    {
+        $controllerName = $this->router->getRouteForUrl('/resource', 'DELETE');
+
+        self::assertEquals('Framework\\Controller\\Resource\\Delete', $controllerName->getControllerName());
+        self::assertEquals(null, $controllerName->getResourceId());
+    }
+
+    public function testParsesResourceWithIdUrlWithPost()
+    {
+        $controllerName = $this->router->getRouteForUrl('/resource/1', 'POST');
+
+        self::assertEquals('Framework\\Controller\\Resource\\Create', $controllerName->getControllerName());
+        self::assertEquals('1', $controllerName->getResourceId());
+    }
+
+    public function testParsesResourceWithIdUrlWithPut()
+    {
+        $controllerName = $this->router->getRouteForUrl('/resource/1', 'PUT');
+
+        self::assertEquals('Framework\\Controller\\Resource\\Update', $controllerName->getControllerName());
+        self::assertEquals('1', $controllerName->getResourceId());
+    }
+
+    public function testParsesResourceWithIdUrlWithDelete()
+    {
+        $controllerName = $this->router->getRouteForUrl('/resource/1', 'DELETE');
+
+        self::assertEquals('Framework\\Controller\\Resource\\Delete', $controllerName->getControllerName());
+        self::assertEquals('1', $controllerName->getResourceId());
+    }
 }
