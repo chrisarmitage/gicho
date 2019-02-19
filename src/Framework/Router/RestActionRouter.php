@@ -51,6 +51,8 @@ class RestActionRouter implements Router
             $matches['resource']
         );
 
+        $matches['action'] = array_filter($matches['action']);
+
         $resourceName = $this->controllerNamespace . array_pop($resourceElements);
         $controllerType = $this->methodActions[$method];
         $resourceId = (\count($matches['resource']) === \count($matches['id']))
