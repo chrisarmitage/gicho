@@ -6,22 +6,30 @@ use Framework\Route;
 
 class RpcRoute implements Route
 {
+    /**
+     * @var string
+     */
     protected $controllerName;
 
     /**
-     * @param $controllerName
+     * @param string $controllerName
      */
-    public function __construct($controllerName)
+    public function __construct(string $controllerName)
     {
         $this->controllerName = $controllerName;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getControllerName()
+    public function getControllerName() : string
     {
         return $this->controllerName;
+    }
+
+    public function getParams(): array
+    {
+        return [];
     }
 
 }

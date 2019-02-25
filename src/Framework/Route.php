@@ -7,5 +7,10 @@ interface Route
     /**
      * @return string
      */
-    public function getControllerName();
+    public function getControllerName() : string;
+
+    /**
+     * @return string[]
+     */
+    public function getParams() : array;
 }
