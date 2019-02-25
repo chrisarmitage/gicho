@@ -43,7 +43,7 @@ class App
 
         $controller = $this->controllerResolver->resolve($route->getControllerName());
 
-        $controllerResponse = $controller->dispatch($route);
+        $controllerResponse = $controller->dispatch(...array_values($route->getParams()));
 
         $response = new Response(
             json_encode($controllerResponse),

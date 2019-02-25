@@ -7,5 +7,5 @@ interface Controller
     /**
      * @return mixed
      */
-    public function dispatch();
+    //public function dispatch();
 }
