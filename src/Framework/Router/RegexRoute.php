@@ -4,12 +4,17 @@ namespace Framework\Router;
 
 use Framework\Route;
 
-class RpcRoute implements Route
+class RegexRoute implements Route
 {
     /**
      * @var string
      */
     protected $controllerName;
+
+    /**
+     * @var string[]
+     */
+    protected $params = [];
 
     /**
      * @param string $controllerName
@@ -27,9 +32,22 @@ class RpcRoute implements Route
         return $this->controllerName;
     }
 
-    public function getParams(): array
+    /**
+     * @param string[] $params
+     * @return RegexRoute
+     */
+    public function setParams(array $params) : self
     {
-        return [];
+        $this->params = $params;
+
+        return $this;
     }
 
+    /**
+     * @return string[]
+     */
+    public function getParams() : array
+    {
+        return $this->params;
+    }
 }
