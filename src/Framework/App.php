@@ -37,21 +37,25 @@ class App
 
     public function processRequest(Request $request)
     {
-        $route = $this->router->getRouteForUrl($request->getPathInfo());
+        $route = $this->router->getRouteForUrl($request->getPathInfo(), $request->getMethod());
 
         $this->container->share($route);
 
         $controller = $this->controllerResolver->resolve($route->getControllerName());
 
-        $controllerResponse = $controller->dispatch($route);
+        $controllerResponse = $controller->dispatch(...array_values($route->getParams()));
 
-        $response = new Response(
-            json_encode($controllerResponse),
-            Response::HTTP_OK,
-            [
-                'content-type' => 'application/json',
-            ]
-        );
+        if ($controllerResponse instanceof Response === false) {
+            $response = new Response(
+                json_encode($controllerResponse),
+                Response::HTTP_OK,
+                [
+                    'content-type' => 'application/json',
+                ]
+            );
+        } else {
+            $response = $controllerResponse;
+        }
 
         $response->prepare($request);
 

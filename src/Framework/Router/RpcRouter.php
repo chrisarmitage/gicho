@@ -18,10 +18,11 @@ class RpcRouter implements Router
 
 
     /**
-     * @param $url
+     * @param string $url
+     * @param string $method
      * @return RpcRoute
      */
-    public function getRouteForUrl($url)
+    public function getRouteForUrl(string $url, string $method) : RpcRoute
     {
         $url = parse_url($url);
 

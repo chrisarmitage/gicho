@@ -4,7 +4,7 @@ namespace Framework\Router;
 
 use Framework\Router;
 
-class RestRouter implements Router
+class RestActionRouter implements Router
 {
     protected $controllerNamespace;
 
@@ -32,7 +32,7 @@ class RestRouter implements Router
     {
         $url = parse_url($url);
 
-        preg_match_all("#/(?<resource>[\w\-]+)(?:/(?<id>[\w\-]+))?#", $url['path'], $matches);
+        preg_match_all("#/(?<resource>[\w\-]+)(?:/(?<id>(?!actions)[\w\-]+))?(?:/actions/(?<action>[\w\-]+))?#", $url['path'], $matches);
 
         $resourceElements = array_map(
             function($url) {
@@ -51,9 +51,11 @@ class RestRouter implements Router
             $matches['resource']
         );
 
+        $matches['action'] = array_filter($matches['action']);
+
         $resourceName = $this->controllerNamespace . array_pop($resourceElements);
         $controllerType = $this->methodActions[$method];
-        $resourceId = (count($matches['resource']) === count($matches['id']))
+        $resourceId = (\count($matches['resource']) === \count($matches['id']))
             ? array_pop($matches['id'])
             : null;
 
@@ -65,6 +67,22 @@ class RestRouter implements Router
         if ($controllerType === 'Index' && $resourceId !== '') {
             $controllerType = 'Read';
         }
+
+        if ($method === 'POST' && \count($matches['action']) >= 1) {
+            $action =  str_replace(
+                ' ',
+                '',
+                ucwords(
+                    str_replace(
+                        '-',
+                        ' ',
+                        strtolower(array_pop($matches['action']))
+                    )
+                )
+            );
+
+            $controllerType = 'Action\\' . $action;
+        }
         $controllerName = $resourceName . '\\' . $controllerType;
 
         $nestedResources = [];
@@ -72,8 +90,6 @@ class RestRouter implements Router
             $nestedResources[$value] = $matches['id'][$key];
         }
 
-        $route = new RestRoute($controllerName, $resourceId, $nestedResources);
-
-        return $route;
+        return new RestRoute($controllerName, $resourceId, $nestedResources);
     }
 }
