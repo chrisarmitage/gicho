@@ -1,5 +1,6 @@
 {
   "name": "chrisarmitage/framework",
+  "type": "library",
   "authors": [
     {
       "name": "Chris Armitage",
