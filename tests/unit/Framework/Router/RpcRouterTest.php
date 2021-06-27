@@ -7,7 +7,7 @@ class RpcRouterTest extends \PHPUnit\Framework\TestCase
      */
     protected $router;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->router = new \Framework\Router\RpcRouter('Framework\\Controller\\');
     }

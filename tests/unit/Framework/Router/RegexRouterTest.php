@@ -69,14 +69,13 @@ class RegexRouterTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Cannot find route
-     */
     public function testThrowsExceptionWhenRouteNotFound()
     {
         $router = new \Framework\Router\RegexRouter('Framework\\Controller\\');
         $router->addRoute('/single', 'SingleController');
+
+        $this->expectExceptionMessage("Cannot find route");
+        $this->getExpectedException(\Exception::class);
 
         $router->getRouteForUrl('/other', 'GET');
     }
