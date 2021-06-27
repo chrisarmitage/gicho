@@ -3,6 +3,7 @@
 namespace Framework;
 
 use Auryn\Injector;
+use Framework\Router\RpcRouter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,20 +24,28 @@ class App
      */
     protected $container;
 
-    /**
-     * @param Router             $router
-     * @param ControllerResolver $controllerResolver
-     * @param Injector           $container
-     */
-    public function __construct(Router $router, ControllerResolver $controllerResolver, Injector $container)
+    public function __construct()
     {
+        $container = new \Auryn\Injector();
+
+        $container->share($container);
+
+        $container->share(new RpcRouter(null));
+
+        $container->alias(\Framework\Router::class, RpcRouter::class);
+
+        $router = $container->make(Router::class);
+        $controllerResolver = $container->make(ControllerResolver::class);
+
         $this->router = $router;
         $this->controllerResolver = $controllerResolver;
         $this->container = $container;
     }
 
-    public function processRequest(Request $request)
+    public function run(): void
     {
+        $request = Request::createFromGlobals();
+
         $route = $this->router->getRouteForUrl($request->getPathInfo(), $request->getMethod());
 
         $this->container->share($route);
@@ -59,7 +68,7 @@ class App
 
         $response->prepare($request);
 
-        return $response;
+        $response->send();
     }
 
 }
