@@ -78,7 +78,17 @@ class App
         // Inline code
         $command = $args[1];
 
-        $commandName = ucfirst($command);
+        $commandName = str_replace(
+            ' ',
+            '',
+            ucwords(
+                str_replace(
+                    '-',
+                    ' ',
+                    strtolower($command)
+                )
+            )
+        );
 
         $actual = $this->container->make('Application\\Console\\' . $commandName);
 
