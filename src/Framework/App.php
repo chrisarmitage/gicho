@@ -71,4 +71,17 @@ class App
         $response->send();
     }
 
+    public function console()
+    {
+        $args = $_SERVER['argv'];
+
+        // Inline code
+        $command = $args[1];
+
+        $commandName = ucfirst($command);
+
+        $actual = $this->container->make('Application\\Console\\' . $commandName);
+
+        $actual->execute();
+    }
 }
