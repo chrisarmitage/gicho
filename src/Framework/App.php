@@ -84,4 +84,75 @@ class App
 
         $actual->execute();
     }
+
+    public function attach()
+    {
+        $argv = $_SERVER['argv'];
+
+        // strip the application name
+        array_shift($argv);
+
+        $tokens = $argv;
+
+        /**
+         * Parse options
+         */
+        $parsedTokens = [];
+        // Work through all the tokens
+        while (null !== $token = array_shift($tokens)) {
+            if (str_starts_with($token, '--')) {
+                // token is a long option
+                $tokenName = substr($token, 2);
+                $tokenValue = array_shift($tokens);
+                $parsedTokens[$tokenName] = $tokenValue;
+            }
+        }
+
+        /**
+         * Inline listener
+         */
+
+        $listenerName = str_replace(
+            ' ',
+            '',
+            ucwords(
+                str_replace(
+                    '-',
+                    ' ',
+                    strtolower($parsedTokens['listener'])
+                )
+            )
+        );
+
+        $actual = $this->container->make('Application\\Listener\\' . $listenerName);
+
+        switch ($parsedTokens['connection']) {
+            case 'redis:first':
+                $redis = new \Redis();
+                $redis->connect('redis', 6379);
+                echo 'Processing...' . PHP_EOL;
+
+                while (true) {
+                    $data = $redis->blpop('test_pipeline.first', 30);
+                    // echo 'Got data...' . PHP_EOL;
+                    if (count($data) !== 0) {
+                        $actual->execute(json_decode($data[1]));
+                    }
+                }
+                break;
+            case 'redis:second':
+                $redis = new \Redis();
+                $redis->connect('redis', 6379);
+                echo 'Processing...' . PHP_EOL;
+
+                while (true) {
+                    $data = $redis->blpop('test_pipeline.second', 30);
+                    // echo 'Got data...' . PHP_EOL;
+                    if (count($data) !== 0) {
+                        $actual->execute(json_decode($data[1]));
+                    }
+                }
+                break;
+        }
+    }
 }
