@@ -5,6 +5,7 @@ namespace Framework;
 use Auryn\Injector;
 use Dotenv\Dotenv;
 use Framework\Router\RpcRouter;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -170,6 +171,27 @@ class App
                     }
                 }
                 break;
+            case 'amqp':
+                $connection = new AMQPStreamConnection(
+                    $_ENV['AMQP_HOST'],
+                    $_ENV['AMQP_PORT'],
+                    $_ENV['AMQP_USER'],
+                    $_ENV['AMQP_PASSWORD'],
+                    $_ENV['AMQP_VHOST'],
+                );
+                $channel = $connection->channel();
+                $channel->basic_qos(null, 1, null);
+                $channel->queue_declare('amqp_test', false, false, false, false);
+
+                $channel->basic_consume('amqp_test', '', false, false, false, false, function($message) use ($actual) {
+                    $actual->execute(json_decode($message->body));
+
+                    $message->ack();
+                });
+
+                while ($channel->is_open()) {
+                    $channel->wait();
+                }
         }
     }
 }
