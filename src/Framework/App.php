@@ -3,6 +3,7 @@
 namespace Framework;
 
 use Auryn\Injector;
+use Dotenv\Dotenv;
 use Framework\Router\RpcRouter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +25,14 @@ class App
      */
     protected $container;
 
-    public function __construct()
+    public function __construct($rootDirectory)
     {
+        /**
+         * Load the environment
+         */
+        $dotenv = Dotenv::createImmutable($rootDirectory);
+        $dotenv->load();
+
         $container = new \Auryn\Injector();
 
         $container->share($container);
