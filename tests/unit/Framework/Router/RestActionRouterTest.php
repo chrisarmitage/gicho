@@ -9,7 +9,7 @@ class RestActionRouterTest extends RestRouterTest
      */
     protected $router;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->router = new \Framework\Router\RestActionRouter('Framework\\Controller\\');
     }
