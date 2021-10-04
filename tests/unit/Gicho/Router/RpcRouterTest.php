@@ -1,0 +1,42 @@
+<?php
+
+class RpcRouterTest extends \PHPUnit\Framework\TestCase
+{
+    /**
+     * @var \Gicho\Router\RpcRouter
+     */
+    protected $router;
+
+    public function setUp(): void
+    {
+        $this->router = new \Gicho\Router\RpcRouter('Framework\\Controller\\');
+    }
+
+    public function testParsesSingleDepthUrl()
+    {
+        $controllerName = $this->router->getRouteForUrl('/single', 'GET');
+
+        self::assertEquals('Framework\\Controller\\Single', $controllerName->getControllerName());
+    }
+
+    public function testParsesMultiDepthUrl()
+    {
+        $controllerName = $this->router->getRouteForUrl('/one/two/three', 'GET');
+
+        self::assertEquals('Framework\\Controller\\One\\Two\\Three', $controllerName->getControllerName());
+    }
+
+    public function testIgnoresCase()
+    {
+        $controllerName = $this->router->getRouteForUrl('/one/Two/THREE', 'GET');
+
+        self::assertEquals('Framework\\Controller\\One\\Two\\Three', $controllerName->getControllerName());
+    }
+
+    public function testProcessesDashes()
+    {
+        $controllerName = $this->router->getRouteForUrl('/one-part/two/three-multi-part', 'GET');
+
+        self::assertEquals('Framework\\Controller\\OnePart\\Two\\ThreeMultiPart', $controllerName->getControllerName());
+    }
+}
