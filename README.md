@@ -1,6 +1,6 @@
-# framework
+# Gicho framework
 
-A minimal RESTFUL API framework
+A minimal framework to help with API development
 
 ![Version: Alpha](https://img.shields.io/badge/version-alpha-red.svg)
 [![Build Status](https://travis-ci.com/chrisarmitage/framework.svg?branch=master)](https://travis-ci.com/chrisarmitage/framework)
