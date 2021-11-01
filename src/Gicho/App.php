@@ -26,6 +26,8 @@ class App
      */
     protected $container;
 
+    protected $runListener = true;
+
     public function __construct($rootDirectory)
     {
         /**
@@ -105,6 +107,19 @@ class App
 
     public function attach()
     {
+        /**
+         * Activate pcntl signals, listen for TERM and INT, and set runListener to false if detected
+         */
+        pcntl_async_signals(true);
+        pcntl_signal(SIGTERM, function () {
+            $this->runListener = false;
+            echo '[Requesting shutdown - TERM - ' . (new \DateTimeImmutable())->format('H:i:s') . ']';
+        });
+        pcntl_signal(SIGINT, function () {
+            $this->runListener = false;
+            echo '[Requesting shutdown - INT - ' . (new \DateTimeImmutable())->format('H:i:s') . ']';
+        });
+
         $argv = $_SERVER['argv'];
 
         // strip the application name
@@ -189,9 +204,11 @@ class App
                     $message->ack();
                 });
 
-                while ($channel->is_open()) {
+                while ($channel->is_open() && $this->runListener) {
                     $channel->wait();
                 }
+                echo 'Gracefully shutdown - ' . (new \DateTimeImmutable())->format('H:i:s') . PHP_EOL;
+                break;
         }
     }
 }
