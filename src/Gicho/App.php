@@ -52,10 +52,8 @@ class App
         $this->container = $container;
     }
 
-    public function run(): void
+    public function run(Request $request): Response
     {
-        $request = Request::createFromGlobals();
-
         $route = $this->router->getRouteForUrl($request->getPathInfo(), $request->getMethod());
 
         $this->container->share($route);
@@ -78,7 +76,7 @@ class App
 
         $response->prepare($request);
 
-        $response->send();
+        return $response;
     }
 
     public function console()
