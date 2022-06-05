@@ -100,7 +100,28 @@ class App
 
         $actual = $this->container->make('Application\\Console\\' . $commandName);
 
-        $actual->execute();
+        $argv = $_SERVER['argv'];
+
+        // strip the application name
+        array_shift($argv);
+
+        $tokens = $argv;
+
+        /**
+         * Parse options
+         */
+        $parsedTokens = [];
+        // Work through all the tokens
+        while (null !== $token = array_shift($tokens)) {
+            if (str_starts_with($token, '--')) {
+                // token is a long option
+                $tokenName = substr($token, 2);
+                $tokenValue = array_shift($tokens);
+                $parsedTokens[$tokenName] = $tokenValue;
+            }
+        }
+
+        $actual->execute($parsedTokens);
     }
 
     public function attach()
