@@ -288,4 +288,9 @@ class App
 
         }
     }
+
+    public function container(): Injector
+    {
+        return $this->container;
+    }
 }
