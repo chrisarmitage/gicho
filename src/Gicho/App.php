@@ -86,19 +86,26 @@ class App
         // Inline code
         $command = $args[1];
 
-        $commandName = str_replace(
-            ' ',
-            '',
-            ucwords(
-                str_replace(
-                    '-',
+        preg_match_all("#:(?<command>[\w\-]+)#", ':' . $command, $matches);
+
+        $commandElements = array_map(
+            function ($commandElement) {
+                return str_replace(
                     ' ',
-                    strtolower($command)
-                )
-            )
+                    '',
+                    ucwords(
+                        str_replace(
+                            '-',
+                            ' ',
+                            strtolower($commandElement)
+                        )
+                    )
+                );
+            },
+            $matches['command']
         );
 
-        $actual = $this->container->make('Application\\Console\\' . $commandName);
+        $actual = $this->container->make('Application\\Console\\' . implode('\\', $commandElements));
 
         $argv = $_SERVER['argv'];
 
