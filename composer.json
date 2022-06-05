@@ -11,7 +11,12 @@
     "php": "8.*",
     "symfony/http-foundation": "^3.2",
     "rdlowrey/auryn": "^1.4",
-    "vlucas/phpdotenv": "^5.3"
+    "vlucas/phpdotenv": "^5.3",
+    "doctrine/orm": "^2.11.0",
+    "doctrine/dbal": "^3.2",
+    "doctrine/annotations": "1.13.2",
+    "symfony/yaml": "^5.4",
+    "symfony/cache": "^5.4"
   },
   "suggest": {
     "enqueue/rdkafka": "Allows Kafka message queues to be used"

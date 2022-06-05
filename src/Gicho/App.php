@@ -3,6 +3,8 @@
 namespace Gicho;
 
 use Auryn\Injector;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OrmSetup;
 use Dotenv\Dotenv;
 use Gicho\Router\RpcRouter;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -28,8 +30,11 @@ class App
 
     protected $runListener = true;
 
+    protected $rootDirectory;
+
     public function __construct($rootDirectory)
     {
+        $this->rootDirectory = $rootDirectory;
         /**
          * Load the environment
          */
@@ -50,6 +55,8 @@ class App
         $this->router = $router;
         $this->controllerResolver = $controllerResolver;
         $this->container = $container;
+
+        $this->setUpDoctrine();
     }
 
     public function run(Request $request): Response
@@ -299,5 +306,21 @@ class App
     public function container(): Injector
     {
         return $this->container;
+    }
+
+    protected function setUpDoctrine()
+    {
+        $isDevMode = true;
+        $proxyDir = null;
+        $cache = null;
+        $useSimpleAnnotationReader = false;
+        $config = OrmSetup::createXMLMetadataConfiguration(array($this->rootDirectory."/config/xml"), $isDevMode);
+        $conn = array(
+            'driver' => 'pdo_sqlite',
+            'path' => $this->rootDirectory . '/db.sqlite',
+        );
+        $entityManager = EntityManager::create($conn, $config);
+
+        $this->container->share($entityManager);
     }
 }
