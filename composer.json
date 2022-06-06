@@ -19,7 +19,8 @@
     "symfony/cache": "^5.4"
   },
   "suggest": {
-    "enqueue/rdkafka": "Allows Kafka message queues to be used"
+    "enqueue/rdkafka": "Allows Kafka message queues to be used",
+    "php-amqplib/php-amqplib": "Allows AMQP message queues to be used"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",
