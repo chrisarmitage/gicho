@@ -16,7 +16,8 @@
     "doctrine/dbal": "^3.2",
     "doctrine/annotations": "1.13.2",
     "symfony/yaml": "^5.4",
-    "symfony/cache": "^5.4"
+    "symfony/cache": "^5.4",
+    "nette/robot-loader": "^3.4"
   },
   "suggest": {
     "enqueue/rdkafka": "Allows Kafka message queues to be used",
