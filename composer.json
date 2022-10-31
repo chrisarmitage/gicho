@@ -32,5 +32,10 @@
     "psr-4": {
       "Gicho\\": "src/Gicho/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
   }
 }
