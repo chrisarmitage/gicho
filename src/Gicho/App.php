@@ -59,6 +59,13 @@ class App
         $this->setUpDoctrine();
     }
 
+    public function setRouter(Router $router): self
+    {
+        $this->router = $router;
+
+        return $this;
+    }
+
     public function run(Request $request): Response
     {
         $route = $this->router->getRouteForUrl($request->getPathInfo(), $request->getMethod());
