@@ -12,6 +12,11 @@ class RegexRoute implements Route
     protected $controllerName;
 
     /**
+     * @var string
+     */
+    protected $methodName;
+
+    /**
      * @var string[]
      */
     protected $params = [];
@@ -19,9 +24,10 @@ class RegexRoute implements Route
     /**
      * @param string $controllerName
      */
-    public function __construct(string $controllerName)
+    public function __construct(string $controllerName, string $methodName)
     {
         $this->controllerName = $controllerName;
+        $this->methodName = $methodName;
     }
 
     /**
@@ -30,6 +36,14 @@ class RegexRoute implements Route
     public function getControllerName() : string
     {
         return $this->controllerName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethodName(): string
+    {
+        return $this->methodName;
     }
 
     /**
