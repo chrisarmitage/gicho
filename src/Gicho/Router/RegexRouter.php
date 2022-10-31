@@ -56,7 +56,7 @@ class RegexRouter implements Router
     {
         foreach ($this->routes as $route => $controller) {
             if (preg_match($route, $url, $matches)) {
-                $foundRoute = new RegexRoute($this->controllerNamespace . $controller);
+                $foundRoute = new RegexRoute($this->controllerNamespace . $controller, 'dispatch');
 
                 $routeParameters = [];
                 foreach ($matches as $key => $value) {
