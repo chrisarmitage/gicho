@@ -65,9 +65,9 @@ class App
 
         $this->container->share($route);
 
-        $controller = $this->controllerResolver->resolve($route->getControllerName());
+        $controller = $this->controllerResolver->resolve($route->getControllerName(), $route->getMethodName());
 
-        $controllerResponse = $controller->dispatch(...array_values($route->getParams()));
+        $controllerResponse = $controller->{$route->getMethodName()}(...array_values($route->getParams()));
 
         if ($controllerResponse instanceof Response === false) {
             $response = new Response(
